@@ -46,10 +46,16 @@ dataset/
 - использует готовое разбиение `train`, `valid`, `test`;
 - создаст датафрейм с колонками `image_path`, `annotation_path`, `image_id`, `label`, `split`.
 
-Если Kaggle после **Add data** положил датасет, например, в `/kaggle/input/projectskill-skin-lesions`, то обычно ничего менять не надо. Если автоопределение выбрало не ту папку, в ячейке загрузки данных задайте:
+Если Kaggle после **Add data** положил датасет, например, в `/kaggle/input/projectskill-skin-lesions`, то обычно ничего менять не надо. Иногда Kaggle может смонтировать данные глубже, например:
+
+```text
+/kaggle/input/datasets/drmatt91/projectskill-skin-lesions
+```
+
+Правильный `DATA_DIR` — это папка, внутри которой лежит `meta.json` и подпапки `train`, `valid`, `test`. Если автоопределение выбрало не ту папку и вы видите `Формат данных: folders`, в ячейке загрузки данных задайте:
 
 ```python
-DATA_DIR = Path("/kaggle/input/projectskill-skin-lesions")
+DATA_DIR = Path("/kaggle/input/datasets/drmatt91/projectskill-skin-lesions")
 ```
 
 Оставьте так:
@@ -136,7 +142,7 @@ PRETRAINED_WEIGHTS_MODE = "none"
 /kaggle/input/<dataset-name>/
 ```
 
-Ноутбук автоматически ищет структуру `meta.json` + `ann/img` в `/kaggle/input`. Если автоматический поиск выбрал не ту папку, задайте переменную окружения или вручную поменяйте `DATA_DIR` в первой ячейке загрузки данных.
+Ноутбук автоматически ищет структуру `meta.json` + `ann/img` в `/kaggle/input`, в том числе во вложенных папках. Если автоматический поиск всё равно выбрал не ту папку, задайте переменную окружения или вручную поменяйте `DATA_DIR` в первой ячейке загрузки данных.
 
 Пример:
 

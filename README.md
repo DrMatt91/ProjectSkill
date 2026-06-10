@@ -64,7 +64,7 @@ https://download.pytorch.org/models/mobilenet_v3_large-8738ca79.pth
 6. Включите GPU: **Settings → Accelerator → GPU**.
 7. Оставьте **Internet выключенным**.
 8. Загрузите `notebooks/skin_lesion_classification_final.ipynb`.
-9. Ничего не заполняйте в `METADATA_PATH`, `IMAGE_ID_COLUMN` и `LABEL_COLUMN`: для вашего формата ноутбук сам прочитает `meta.json` и `ann/*.json`.
+9. Ничего не заполняйте в `METADATA_PATH`, `IMAGE_ID_COLUMN` и `LABEL_COLUMN`: для вашего формата ноутбук сам прочитает `meta.json` и `ann/*.json`. Если увидите `Формат данных: folders`, укажите `DATA_DIR` на папку, где лежат `meta.json`, `train`, `valid`, `test`.
 10. Для первого теста задайте `SAMPLE_PER_CLASS = 200`, для финального запуска — `SAMPLE_PER_CLASS = 0`.
 11. Запустите ноутбук сверху вниз и сохраните `.ipynb` с outputs.
 
