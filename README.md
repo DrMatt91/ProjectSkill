@@ -40,7 +40,7 @@ https://download.pytorch.org/models/mobilenet_v3_large-8738ca79.pth
 Ноутбук включает:
 
 - автоопределение путей для локального запуска, Kaggle и Colab;
-- загрузку данных из папок классов или `metadata.csv`;
+- загрузку данных из вашего JSON-формата `meta.json` + `train/valid/test/ann/img`, а также из папок классов или `metadata.csv`;
 - offline-загрузку ImageNet-весов из локальных `.pth`-файлов;
 - проверку изображений;
 - EDA;
@@ -57,15 +57,16 @@ https://download.pytorch.org/models/mobilenet_v3_large-8738ca79.pth
 ## Быстрый запуск на Kaggle без Internet
 
 1. Скачайте датасет с Cloud Mail на компьютер.
-2. Создайте на Kaggle приватный Dataset с изображениями.
+2. Создайте на Kaggle приватный Dataset с изображениями и JSON-аннотациями. Внутри должны остаться `meta.json`, `train/ann`, `train/img`, `valid/ann`, `valid/img`, `test/ann`, `test/img`.
 3. Создайте на Kaggle второй приватный Dataset с файлами весов `resnet18-f37072fd.pth` и `mobilenet_v3_large-8738ca79.pth`.
 4. Создайте Kaggle Notebook.
 5. Подключите оба Dataset через **Add data**.
 6. Включите GPU: **Settings → Accelerator → GPU**.
 7. Оставьте **Internet выключенным**.
 8. Загрузите `notebooks/skin_lesion_classification_final.ipynb`.
-9. Для первого теста задайте `SAMPLE_PER_CLASS = 200`, для финального запуска — `SAMPLE_PER_CLASS = 0`.
-10. Запустите ноутбук сверху вниз и сохраните `.ipynb` с outputs.
+9. Ничего не заполняйте в `METADATA_PATH`, `IMAGE_ID_COLUMN` и `LABEL_COLUMN`: для вашего формата ноутбук сам прочитает `meta.json` и `ann/*.json`.
+10. Для первого теста задайте `SAMPLE_PER_CLASS = 200`, для финального запуска — `SAMPLE_PER_CLASS = 0`.
+11. Запустите ноутбук сверху вниз и сохраните `.ipynb` с outputs.
 
 ## Минимальные зависимости для локального запуска
 

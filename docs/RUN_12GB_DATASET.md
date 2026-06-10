@@ -14,6 +14,62 @@
 - путь к данным стабильный: `/kaggle/input/<dataset-name>/...`;
 - результаты ноутбука можно сохранить и приложить как `.ipynb` для сдачи.
 
+
+## Формат вашего датасета: meta.json + ann/img
+
+По присланному скриншоту у вас не папки классов и не `metadata.csv`. У вас JSON-разметка в формате, похожем на Supervisely:
+
+```text
+dataset/
+├── meta.json
+├── train/
+│   ├── ann/
+│   │   ├── ISIC_0012266.jpg.json
+│   │   └── ...
+│   └── img/
+│       ├── ISIC_0012266.jpg
+│       └── ...
+├── valid/
+│   ├── ann/
+│   └── img/
+└── test/
+    ├── ann/
+    └── img/
+```
+
+Для такого формата **не нужно** создавать `metadata.csv` и **не нужно** раскладывать изображения по папкам классов. Ноутбук сам:
+
+- найдёт `meta.json`;
+- возьмёт target-классы из тегов с `value_type = "none"`;
+- проигнорирует служебные теги `age_approximate` и `sex` как target;
+- сопоставит `ann/ISIC_0012266.jpg.json` с `img/ISIC_0012266.jpg`;
+- использует готовое разбиение `train`, `valid`, `test`;
+- создаст датафрейм с колонками `image_path`, `annotation_path`, `image_id`, `label`, `split`.
+
+Если Kaggle после **Add data** положил датасет, например, в `/kaggle/input/projectskill-skin-lesions`, то обычно ничего менять не надо. Если автоопределение выбрало не ту папку, в ячейке загрузки данных задайте:
+
+```python
+DATA_DIR = Path("/kaggle/input/projectskill-skin-lesions")
+```
+
+Оставьте так:
+
+```python
+METADATA_PATH = None
+TARGET_TAG_NAMES = None
+```
+
+Если нужно явно ограничить классы, можно задать:
+
+```python
+TARGET_TAG_NAMES = [
+    "melanoma",
+    "melanoma_or_nevus",
+    "nevus_or_seborrheic_keratosis",
+    "seborrheic_keratosis",
+]
+```
+
 ## Вариант A — Kaggle, рекомендуется
 
 ### 1. Скачать датасет
@@ -25,7 +81,7 @@
 1. Откройте Kaggle.
 2. Перейдите в **Datasets → New Dataset**.
 3. Назовите датасет, например: `projectskill-skin-lesions`.
-4. Загрузите архив или распакованную папку с изображениями.
+4. Загрузите архив или распакованную папку целиком, не меняя структуру `meta.json`, `train/ann`, `train/img`, `valid/ann`, `valid/img`, `test/ann`, `test/img`.
 5. Оставьте датасет приватным, если не хотите публиковать данные.
 
 ### 3. Создать Kaggle Notebook
@@ -80,7 +136,7 @@ PRETRAINED_WEIGHTS_MODE = "none"
 /kaggle/input/<dataset-name>/
 ```
 
-Ноутбук автоматически ищет изображения в `/kaggle/input`. Если автоматический поиск выбрал не ту папку, задайте переменную окружения или вручную поменяйте `DATA_DIR` в первой ячейке загрузки данных.
+Ноутбук автоматически ищет структуру `meta.json` + `ann/img` в `/kaggle/input`. Если автоматический поиск выбрал не ту папку, задайте переменную окружения или вручную поменяйте `DATA_DIR` в первой ячейке загрузки данных.
 
 Пример:
 
